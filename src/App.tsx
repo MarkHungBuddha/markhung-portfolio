@@ -6,7 +6,7 @@ function App() {
     <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
       <h1>我的個人網站</h1>
       <nav>
-        <a href="#about">關於我</a> | 
+        <a href="#about">關於我</a> |
         <a href="#blog">部落格</a> | 
         <a href="#contact">聯絡方式</a>
       </nav>
@@ -26,7 +26,7 @@ function App() {
 
       <section id="contact" style={{ marginTop: '2rem' }}>
         <h2>聯絡方式</h2>
-        <p>Email: your@email.com</p>
+        <p>Email: 1111@email.com</p>
       </section>
     </div>
   )
