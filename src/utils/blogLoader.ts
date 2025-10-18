@@ -15,10 +15,7 @@ export interface BlogPost {
 export async function getAllPosts(): Promise<BlogPost[]> {
   // 這裡列出所有的 markdown 檔案
   const blogFiles = [
-    'react-hooks-guide',
-    'typescript-best-practices',
-    'web-performance-optimization',
-    'modern-css-techniques'
+    'how-to-build-static-blog'
   ];
 
   const posts = await Promise.all(
