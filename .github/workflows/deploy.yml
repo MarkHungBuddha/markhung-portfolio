@@ -65,4 +65,4 @@ jobs:
       - name: Deployment complete
         run: |
           echo "🎉 部署完成!"
-          echo "網站已更新到: https://你的網域.com"
+          echo "網站已更新到: https://markhung384.me/"
