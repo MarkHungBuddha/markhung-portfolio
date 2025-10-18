@@ -1,0 +1,476 @@
+.about {
+  padding: 6rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  border-radius: 2px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.about-text h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #646cff;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.about-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.1) 0%, rgba(83, 91, 242, 0.1) 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(100, 108, 255, 0.3);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section-subtitle {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #646cff;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  border-radius: 2px;
+}
+
+/* Bio Section */
+.bio-section {
+  margin-top: 4rem;
+  padding: 3rem 0;
+}
+
+.bio-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+
+.bio-paragraph {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 108, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.bio-paragraph:hover {
+  border-color: rgba(100, 108, 255, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(100, 108, 255, 0.15);
+}
+
+.bio-paragraph h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.bio-paragraph p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Experience Section */
+.experience-section {
+  margin-top: 4rem;
+  padding: 3rem 0;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #646cff 0%, #535bf2 100%);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-left: 2rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -2.5rem;
+  top: 0.5rem;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  border-radius: 50%;
+  border: 3px solid rgba(26, 26, 26, 1);
+  z-index: 1;
+}
+
+.timeline-content {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 108, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  border-color: rgba(100, 108, 255, 0.3);
+  transform: translateX(10px);
+  box-shadow: 0 10px 30px rgba(100, 108, 255, 0.2);
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.experience-header h4 {
+  font-size: 1.4rem;
+  color: #646cff;
+  margin-bottom: 0.5rem;
+}
+
+.company-name {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.period {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(100, 108, 255, 0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.experience-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 1.5rem;
+}
+
+.achievements {
+  font-size: 0.95rem;
+}
+
+.achievements strong {
+  color: rgba(255, 255, 255, 0.9);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.achievements ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.achievements li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.achievements li::marker {
+  color: #646cff;
+}
+
+.skills-section {
+  margin-top: 4rem;
+}
+
+.skills-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.skill-group {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 108, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.skill-group:hover {
+  border-color: rgba(100, 108, 255, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(100, 108, 255, 0.2);
+}
+
+.skill-group h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: #646cff;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-tag {
+  background: rgba(100, 108, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(100, 108, 255, 0.2);
+  transform: scale(1.05);
+}
+
+@media (max-width: 968px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-stats {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .stat-card {
+    flex: 1;
+  }
+
+  .bio-content {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline {
+    padding-left: 1.5rem;
+  }
+
+  .timeline-dot {
+    left: -2.2rem;
+  }
+
+  .experience-header {
+    flex-direction: column;
+  }
+
+  .period {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .about {
+    padding: 4rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.6rem;
+  }
+
+  .about-text h3 {
+    font-size: 1.5rem;
+  }
+
+  .about-stats {
+    flex-direction: column;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bio-paragraph {
+    padding: 1.5rem;
+  }
+
+  .bio-paragraph h4 {
+    font-size: 1.1rem;
+  }
+
+  .timeline {
+    padding-left: 1rem;
+  }
+
+  .timeline-item {
+    padding-left: 1.5rem;
+  }
+
+  .timeline-dot {
+    left: -1.8rem;
+    width: 12px;
+    height: 12px;
+  }
+
+  .timeline-content {
+    padding: 1.5rem;
+  }
+
+  .experience-header h4 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .about {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .about-text p {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .stat-label {
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .skill-tag {
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .skill-group {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .bio-paragraph {
+    background: white;
+  }
+
+  .bio-paragraph h4 {
+    color: rgba(0, 0, 0, 0.95);
+  }
+
+  .bio-paragraph p {
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  .timeline::before {
+    background: linear-gradient(180deg, #646cff 0%, #535bf2 100%);
+  }
+
+  .timeline-dot {
+    border-color: #f9f9f9;
+  }
+
+  .timeline-content {
+    background: white;
+  }
+
+  .company-name {
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .period {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .experience-description {
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  .achievements strong {
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .achievements ul {
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
