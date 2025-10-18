@@ -1,56 +1,64 @@
+import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import { getAllPosts, formatDate, type BlogPost } from '../utils/blogLoader';
 import './Blog.css';
+import 'highlight.js/styles/github-dark.css';
 
 const Blog = () => {
-  const blogPosts = [
-    {
-      title: '如何使用 AWS S3 + CloudFront 部署靜態網站',
-      excerpt: '詳細介紹如何將 React 應用程式部署到 AWS S3，並搭配 CloudFront CDN 加速全球訪問速度...',
-      date: '2025-10-15',
-      readTime: '8 分鐘',
-      tags: ['AWS', 'DevOps', 'React'],
-      image: '☁️',
-    },
-    {
-      title: 'React + TypeScript 最佳實踐',
-      excerpt: '分享在大型專案中使用 TypeScript 的經驗，包含型別定義、泛型應用和常見陷阱...',
-      date: '2025-10-10',
-      readTime: '12 分鐘',
-      tags: ['React', 'TypeScript', 'Best Practices'],
-      image: '⚛️',
-    },
-    {
-      title: '深入理解 JavaScript 閉包',
-      excerpt: '透過實際範例解釋閉包的概念，以及如何在實務中善用閉包來解決問題...',
-      date: '2025-10-05',
-      readTime: '10 分鐘',
-      tags: ['JavaScript', 'Programming'],
-      image: '📚',
-    },
-    {
-      title: 'CSS Grid vs Flexbox：何時該用哪個？',
-      excerpt: '比較 Grid 和 Flexbox 的特性和使用場景，幫助你選擇最適合的佈局方式...',
-      date: '2025-09-28',
-      readTime: '6 分鐘',
-      tags: ['CSS', 'Web Design'],
-      image: '🎨',
-    },
-    {
-      title: '使用 Vite 打造極速開發環境',
-      excerpt: 'Vite 為何這麼快？深入了解其原理以及如何配置最佳化的開發環境...',
-      date: '2025-09-20',
-      readTime: '7 分鐘',
-      tags: ['Vite', 'Tools', 'Performance'],
-      image: '⚡',
-    },
-    {
-      title: 'Git 工作流程與分支策略',
-      excerpt: '介紹常見的 Git 分支策略，包含 Git Flow、GitHub Flow 等，幫助團隊協作更順暢...',
-      date: '2025-09-15',
-      readTime: '9 分鐘',
-      tags: ['Git', 'DevOps', 'Collaboration'],
-      image: '🌿',
-    },
-  ];
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    try {
+      console.log('開始載入部落格文章...');
+      const posts = await getAllPosts();
+      console.log('成功載入文章:', posts);
+      setBlogPosts(posts);
+    } catch (error) {
+      console.error('載入部落格文章時發生錯誤:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const openPost = (post: BlogPost) => {
+    setSelectedPost(post);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePost = () => {
+    setSelectedPost(null);
+    document.body.style.overflow = 'auto';
+  };
+
+  // 計算閱讀時間（約每分鐘 200 字）
+  const calculateReadTime = (content: string): string => {
+    const wordsPerMinute = 200;
+    const wordCount = content.length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return `${minutes} 分鐘`;
+  };
+
+  if (loading) {
+    return (
+      <section id="blog" className="blog">
+        <div className="blog-container">
+          <h2 className="section-title">技術部落格</h2>
+          <p className="section-subtitle">載入中...</p>
+        </div>
+      </section>
+    );
+  }
+
+  console.log('渲染部落格，文章數量:', blogPosts.length);
 
   return (
     <section id="blog" className="blog">
@@ -58,20 +66,25 @@ const Blog = () => {
         <h2 className="section-title">技術部落格</h2>
         <p className="section-subtitle">分享我的學習筆記與開發心得</p>
 
-        <div className="blog-grid">
-          {blogPosts.map((post, index) => (
+        {blogPosts.length === 0 ? (
+          <p className="section-subtitle">沒有找到文章</p>
+        ) : (
+          <div className="blog-grid">
+            {blogPosts.map((post, index) => (
             <article key={index} className="blog-card">
               <div className="blog-image">
                 <span className="blog-emoji">{post.image}</span>
               </div>
               <div className="blog-content">
                 <div className="blog-meta">
-                  <span className="blog-date">{post.date}</span>
+                  <span className="blog-date">{formatDate(post.date)}</span>
                   <span className="blog-divider">•</span>
-                  <span className="blog-read-time">{post.readTime}</span>
+                  <span className="blog-read-time">
+                    {calculateReadTime(post.content)}
+                  </span>
                 </div>
                 <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
+                <p>{post.description}</p>
                 <div className="blog-tags">
                   {post.tags.map((tag, idx) => (
                     <span key={idx} className="blog-tag">
@@ -79,18 +92,57 @@ const Blog = () => {
                     </span>
                   ))}
                 </div>
-                <a href="#" className="read-more">
+                <button
+                  onClick={() => openPost(post)}
+                  className="read-more"
+                >
                   閱讀更多 →
-                </a>
+                </button>
               </div>
             </article>
-          ))}
-        </div>
-
-        <div className="blog-cta">
-          <a href="#" className="btn btn-primary">查看所有文章</a>
-        </div>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* 文章閱讀 Modal */}
+      {selectedPost && (
+        <div className="blog-modal" onClick={closePost}>
+          <div className="blog-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="blog-modal-close" onClick={closePost}>
+              ✕
+            </button>
+
+            <div className="blog-modal-header">
+              <div className="blog-modal-emoji">{selectedPost.image}</div>
+              <h1>{selectedPost.title}</h1>
+              <div className="blog-modal-meta">
+                <span>{formatDate(selectedPost.date)}</span>
+                <span className="blog-divider">•</span>
+                <span>{selectedPost.author}</span>
+                <span className="blog-divider">•</span>
+                <span>{calculateReadTime(selectedPost.content)}</span>
+              </div>
+              <div className="blog-modal-tags">
+                {selectedPost.tags.map((tag, idx) => (
+                  <span key={idx} className="blog-tag">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="blog-modal-body markdown-content">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+              >
+                {selectedPost.content}
+              </ReactMarkdown>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
