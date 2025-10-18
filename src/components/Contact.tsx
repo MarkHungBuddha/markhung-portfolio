@@ -20,12 +20,12 @@ const Contact = () => {
       value: 'github.com/MarkHungBuddha',
       link: 'https://github.com/MarkHungBuddha',
     },
-    {
-      icon: '🐦',
-      title: 'Twitter',
-      value: '@markhung',
-      link: 'https://twitter.com',
-    },
+    // {
+    //   icon: '🐦',
+     // title: 'Twitter',
+    //   value: '@markhung',
+    //   link: 'https://twitter.com',
+    // },
   ];
 
   return (
