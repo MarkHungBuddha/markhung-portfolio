@@ -1,134 +1,54 @@
 ---
-title: 架設靜態履歷網頁與部落格的完整指南
+title: Building and Deploying a Static Portfolio on AWS
 date: 2024-03-01
 author: Mark Hung
-tags: [AWS, CloudFlare, CI/CD, 靜態網站]
+tags: [AWS, Cloudflare, CI/CD, Static Sites]
 image: 🚀
-description: 從網域註冊到 CI/CD 自動部署，完整記錄使用 CloudFlare、AWS S3 和 CloudFront 架設靜態網站的過程與心得。
+description: Lessons from taking a React portfolio from domain registration to automated S3 and CloudFront deployment.
 ---
 
-# 架設靜態履歷網頁與部落格的完整指南
+# Building and Deploying a Static Portfolio on AWS
 
-這篇文章記錄了我從零開始架設個人履歷網站和部落格的完整過程，包含遇到的問題和解決方案。整個架構採用 CloudFlare + AWS CloudFront + AWS S3，並搭配 GitHub Actions 實現自動化部署。
+This article records the infrastructure decisions behind my portfolio: Cloudflare for domain management, Amazon S3 for static storage, CloudFront for delivery, and GitHub Actions for automated deployments.
 
-## 起因
+## Architecture
 
-想要註冊一個自己的網域來展示作品和記錄學習歷程，同時練習使用現代前端技術棧（React + TypeScript）。
+The site is a React and TypeScript application compiled into static assets. The production path is intentionally small:
 
-## 技術選型
+- **Domain and DNS:** Cloudflare
+- **Static asset storage:** Amazon S3
+- **Content delivery:** Amazon CloudFront
+- **Continuous deployment:** GitHub Actions
 
-### 前端框架
+This architecture avoids maintaining an application server while still providing HTTPS, global caching, and repeatable deployments.
 
-工作上部分新專案採用 React + TypeScript，雖然我比較少接觸，但想至少了解這個技術棧的基本運作方式，因此決定採用它來建立個人網站。
+## Domain and TLS setup
 
-### 架構設計
+I originally considered managing the domain through Route 53, but Cloudflare was a better fit for this project. The CloudFront distribution still requires an ACM certificate before the custom domain can serve HTTPS.
 
-最終決定採用以下架構：
-- **網域管理**: CloudFlare
-- **CDN**: AWS CloudFront
-- **靜態檔案託管**: AWS S3
-- **自動部署**: GitHub Actions
+The setup sequence was:
 
-## 實作步驟
+1. Request the certificate through AWS Certificate Manager.
+2. Add the DNS validation records in Cloudflare.
+3. Attach the validated certificate to CloudFront.
+4. Point the public hostname to the CloudFront distribution.
 
-### 1. 網域註冊的波折
+## Continuous deployment
 
-一開始打算使用 AWS Route 53 註冊網域，但一直無法正常註冊，寄信詢問客服也石沉大海。後來決定嘗試其他註冊網域的方式。
+The deployment workflow runs whenever changes reach the main branch:
 
-### 2. 改用 CloudFlare 註冊網域
+1. Check out the repository.
+2. Install the locked npm dependencies.
+3. Run the TypeScript and Vite production build.
+4. Synchronize the generated assets to S3.
+5. Invalidate CloudFront so the new release becomes available.
 
-發現 CloudFlare 註冊網域的年費比 Route 53 便宜非常多！
+AWS credentials and resource identifiers belong in GitHub Actions secrets, never in the workflow file or source code. A stronger production setup uses GitHub OIDC with a narrowly scoped IAM role instead of long-lived access keys.
 
-**建議**：
-- 如果服務已經跟 AWS 深度綁定，還是推薦使用 Route 53 註冊網域
-- 如果只是要用 AWS S3 做靜態網站，CloudFlare 是更經濟實惠的選擇
+## Caching lessons
 
-### 3. 建立靜態網站
+Hashed JavaScript and CSS assets can use long-lived immutable caching because every content change produces a new filename. HTML and unhashed content should use short cache lifetimes or revalidation so visitors do not keep stale pages.
 
-一開始先建立一個預設網站，部署到 AWS S3 bucket 上，並且架設好 CloudFront CDN。
+## What I learned
 
-### 4. SSL 憑證設定
-
-讓 CloudFlare 透過 DNS 註冊 CNAME 時遇到一個問題：
-
-**解決方案**：
-1. 需要先透過 **AWS Certificate Manager (ACM)** 建立 SSL 憑證
-2. 將憑證驗證記錄先註冊到 CloudFlare 的 DNS
-3. 等待憑證驗證通過後，才能完成設定
-
-### 5. 設定 GitHub CI/CD 自動部署
-
-為了讓網站可以自動更新，設定了 GitHub Actions 工作流程。
-
-#### 建立工作流程檔案
-
-需要建立 `.github/workflows/deploy.yml` 並進行適當設定。
-
-#### 安全性注意事項
-
-**重要**：敏感資料（如 AWS 金鑰）都要透過 **GitHub Actions secrets and variables** 儲存，絕對不要寫在 `deploy.yml` 檔案中！
-
-#### AWS IAM 權限設定
-
-1. 前往 AWS 建立專門給 GitHub CI/CD 使用的 IAM 使用者
-2. 只允許存取 S3 和 CloudFront 服務
-3. 如果想要更精細的權限控制，可以編寫自訂的 JSON policy
-
-
-
-### 6. 測試 CI/CD 流程
-
-設定完成後，測試 CI/CD 是否正常運作：
-
-1. 推送程式碼到 GitHub
-2. 檢查 GitHub Actions 執行狀態
-3. 確認檔案是否成功上傳到 S3
-4. 驗證 CloudFront 快取是否正確清除
-5. 訪問網站確認更新已生效
-
-### 7. 實作部落格功能
-
-這次除了個人履歷網站之外，還希望兼顧個人 blog 的功能。但這次沒有想做後端，所以採用折衷方案：
-
-**解決方案**：讓網頁直接讀取 Markdown 檔案並進行渲染。
-
-
-
-這篇文章本身就是用這種方式實作出來的！
-
-## 專案檔案結構
-
-```
-my-portfolio/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # CI/CD 工作流程
-├── public/
-│   └── blog/                   # 部落格 Markdown 文章
-│       └── how-to-build-static-blog.md
-├── src/                        # React 原始碼
-└── package.json
-```
-
-## 關鍵技術要點
-
-### CloudFlare 設定
-- DNS 管理
-- SSL/TLS 加密
-- 網域轉址
-
-### AWS S3 設定
-- 啟用靜態網站託管
-- 設定 bucket policy 允許公開讀取
-- 正確的 CORS 設定
-
-### AWS CloudFront 設定
-- 設定 origin 為 S3 bucket
-- 配置 SSL 憑證
-- 設定快取行為
-
-### GitHub Actions 工作流程
-- 自動建置專案
-- 上傳檔案到 S3
-- 清除 CloudFront 快取
-
+The implementation was straightforward; the important work was at the boundaries between services: certificate validation, DNS records, cache behavior, and IAM permissions. Treating infrastructure and deployment as part of the product made the site easier to operate and safer to change.

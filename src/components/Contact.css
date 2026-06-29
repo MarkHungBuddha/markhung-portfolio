@@ -15,6 +15,11 @@
   margin-top: 3rem;
 }
 
+.contact-content-single {
+  grid-template-columns: minmax(0, 720px);
+  justify-content: center;
+}
+
 /* Contact info panel */
 .contact-info h3 {
   font-size: 1.8rem;

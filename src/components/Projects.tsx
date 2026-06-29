@@ -1,30 +1,39 @@
 import './Projects.css';
+import { useLanguage } from '../i18n/language';
 
 const Projects = () => {
+    const { language } = useLanguage();
+    const isEnglish = language === 'en';
     const projects = [
         {
-            title: '個人作品集網站',
-            description: '使用 React + TypeScript 打造的個人作品集網站，部署於 AWS S3 + CloudFront',
-            tech: ['React', 'TypeScript', 'AWS S3', 'CloudFront'],
-            image: '🌐',
-            frontend: 'https://github.com/MarkHungBuddha/markhung-portfolio',
-            demo: 'https://markhung384.me/',
+            title: 'TravelCal',
+            description: isEnglish
+                ? 'A production sports and travel schedule platform with geospatial search, multilingual data, and more than 2,900 events across Asian sports leagues.'
+                : '正式上線的運動旅遊賽程平台，提供地理空間搜尋、多語資料，整合亞洲各大職業聯盟超過 2,900 場賽事。',
+            tech: ['Go', 'PostgreSQL/PostGIS', 'React', 'Docker'],
+            image: '🗓️',
+            links: [
+                { label: isEnglish ? 'Live Product' : '線上產品', url: 'https://travel-schedule-helper.com', primary: true },
+            ],
         },
         {
-            title: 'E-commerce 購物網站',
-            description: '完整的電商平台，包含商品展示、購物車、結帳和訂單管理',
-            tech: ['Vue', 'JavaScript', 'SpringBoot', 'MS SQL'],
-            image: '🛒',
-            frontend: 'https://github.com/MarkHungBuddha/ispanfinalprojectfrontend',
-            backend: 'https://github.com/MarkHungBuddha/iSpanFinalProject',
+            title: 'Monte Carlo Life Simulator',
+            description: isEnglish
+                ? 'An interactive retirement and life simulator running 10,000 deterministic simulation paths in a Web Worker, including careers, housing, immigration, and sequence risk.'
+                : '互動式退休與人生模擬器，透過 Web Worker 執行 10,000 條可重現的模擬路徑，涵蓋職涯、住房、移民與報酬順序風險。',
+            tech: ['TypeScript', 'React', 'Zustand', 'Web Workers', 'Vitest'],
+            image: '📈',
+            links: [
+                { label: isEnglish ? 'Live Product' : '線上產品', url: 'https://montecarlosimulation.games', primary: true },
+            ],
         },
     ];
 
     return (
         <section id="projects" className="projects">
             <div className="projects-container">
-                <h2 className="section-title">專案作品</h2>
-                <p className="section-subtitle">以下是我最近完成的一些專案</p>
+                <h2 className="section-title">{isEnglish ? 'Selected Projects' : '精選專案'}</h2>
+                <p className="section-subtitle">{isEnglish ? 'Live products built and operated end to end' : '從零打造、部署並持續維運的線上產品'}</p>
 
                 <div className="projects-grid">
                     {projects.map((project, index) => (
@@ -43,21 +52,11 @@ const Projects = () => {
                                     ))}
                                 </div>
                                 <div className="project-links">
-                                    {project.frontend && (
-                                        <a href={project.frontend} className="project-link" target="_blank" rel="noopener noreferrer">
-                                            <span>💻 前端</span>
+                                    {project.links.map((link) => (
+                                        <a key={link.url} href={link.url} className={`project-link ${link.primary ? 'demo-link' : ''}`} target="_blank" rel="noopener noreferrer">
+                                            <span>↗ {link.label}</span>
                                         </a>
-                                    )}
-                                    {project.backend && (
-                                        <a href={project.backend} className="project-link" target="_blank" rel="noopener noreferrer">
-                                            <span>⚙️ 後端</span>
-                                        </a>
-                                    )}
-                                    {project.demo && project.demo !== '#' && (
-                                        <a href={project.demo} className="project-link demo-link" target="_blank" rel="noopener noreferrer">
-                                            <span>🚀 Demo</span>
-                                        </a>
-                                    )}
+                                    ))}
                                 </div>
                             </div>
                         </div>

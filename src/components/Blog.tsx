@@ -4,30 +4,39 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import { getAllPosts, formatDate, type BlogPost } from '../utils/blogLoader';
+import { useLanguage } from '../i18n/language';
 import './Blog.css';
 import 'highlight.js/styles/github-dark.css';
 
 const Blog = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadPosts();
-  }, []);
+    const loadPosts = async () => {
+      setLoading(true);
+      setSelectedPost(null);
 
-  const loadPosts = async () => {
-    try {
-      console.log('開始載入部落格文章...');
-      const posts = await getAllPosts();
-      console.log('成功載入文章:', posts);
-      setBlogPosts(posts);
-    } catch (error) {
-      console.error('載入部落格文章時發生錯誤:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        const posts = await getAllPosts(language);
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error('Failed to load blog posts:', error);
+        setBlogPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadPosts();
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [language]);
 
   const openPost = (post: BlogPost) => {
     setSelectedPost(post);
@@ -44,30 +53,28 @@ const Blog = () => {
     const wordsPerMinute = 200;
     const wordCount = content.length;
     const minutes = Math.ceil(wordCount / wordsPerMinute);
-    return `${minutes} 分鐘`;
+    return isEnglish ? `${minutes} min read` : `閱讀時間 ${minutes} 分鐘`;
   };
 
   if (loading) {
     return (
       <section id="blog" className="blog">
         <div className="blog-container">
-          <h2 className="section-title">技術部落格</h2>
-          <p className="section-subtitle">載入中...</p>
+          <h2 className="section-title">{isEnglish ? 'Writing' : '技術文章'}</h2>
+          <p className="section-subtitle">{isEnglish ? 'Loading...' : '載入中…'}</p>
         </div>
       </section>
     );
   }
 
-  console.log('渲染部落格，文章數量:', blogPosts.length);
-
   return (
     <section id="blog" className="blog">
       <div className="blog-container">
-        <h2 className="section-title">技術部落格</h2>
-        <p className="section-subtitle">分享我的學習筆記與開發心得</p>
+        <h2 className="section-title">{isEnglish ? 'Writing' : '技術文章'}</h2>
+        <p className="section-subtitle">{isEnglish ? 'Engineering notes and lessons from building in production' : '正式環境中的工程筆記與實作心得'}</p>
 
         {blogPosts.length === 0 ? (
-          <p className="section-subtitle">沒有找到文章</p>
+          <p className="section-subtitle">{isEnglish ? 'No articles found.' : '目前沒有文章。'}</p>
         ) : (
           <div className="blog-grid">
             {blogPosts.map((post, index) => (
@@ -77,7 +84,7 @@ const Blog = () => {
               </div>
               <div className="blog-content">
                 <div className="blog-meta">
-                  <span className="blog-date">{formatDate(post.date)}</span>
+                  <span className="blog-date">{formatDate(post.date, language)}</span>
                   <span className="blog-divider">•</span>
                   <span className="blog-read-time">
                     {calculateReadTime(post.content)}
@@ -96,7 +103,7 @@ const Blog = () => {
                   onClick={() => openPost(post)}
                   className="read-more"
                 >
-                  閱讀更多 →
+                  {isEnglish ? 'Read article →' : '閱讀文章 →'}
                 </button>
               </div>
             </article>
@@ -109,7 +116,7 @@ const Blog = () => {
       {selectedPost && (
         <div className="blog-modal" onClick={closePost}>
           <div className="blog-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="blog-modal-close" onClick={closePost}>
+            <button className="blog-modal-close" onClick={closePost} aria-label={isEnglish ? 'Close article' : '關閉文章'}>
               ✕
             </button>
 
@@ -117,7 +124,7 @@ const Blog = () => {
               <div className="blog-modal-emoji">{selectedPost.image}</div>
               <h1>{selectedPost.title}</h1>
               <div className="blog-modal-meta">
-                <span>{formatDate(selectedPost.date)}</span>
+                <span>{formatDate(selectedPost.date, language)}</span>
                 <span className="blog-divider">•</span>
                 <span>{selectedPost.author}</span>
                 <span className="blog-divider">•</span>

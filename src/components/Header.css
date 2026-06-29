@@ -77,6 +77,21 @@
   color: #ccc;
 }
 
+.language-toggle {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
 /* Hamburger menu toggle */
 .menu-toggle {
   display: none;
@@ -129,5 +144,10 @@
     padding: 0.75rem 1.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
+  }
+
+  .language-toggle {
+    margin-top: 0.5rem;
+    padding: 0.7rem 1rem;
   }
 }

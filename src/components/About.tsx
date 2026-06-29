@@ -1,143 +1,136 @@
 import './About.css';
+import { useLanguage } from '../i18n/language';
 
 const About = () => {
-  const skills = [
-    { category: '後端開發', items: ['Java', 'Spring Boot', 'JPA', 'Spring Cache', 'AOP', 'Jasper Reports'] },
-    { category: '前端開發', items: ['Vue3', 'JavaScript', 'HTML/CSS', 'React', 'TypeScript'] },
-    { category: '資料庫與快取', items: ['MS SQL', 'MySQL', 'Redis', 'SQL 優化'] },
-    { category: '開發工具與 DevOps', items: ['Git', 'Maven', 'GitLab CI/CD', 'Shell Script', 'Docker', 'K8s'] },
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
+
+  const skills = isEnglish ? [
+    { category: 'Languages', items: ['Java', 'Go (learning)', 'TypeScript', 'JavaScript', 'SQL', 'Python'] },
+    { category: 'Backend & Data', items: ['Spring Boot', 'Kafka', 'MongoDB', 'Redis', 'PostgreSQL', 'PostGIS'] },
+    { category: 'Infrastructure & Ops', items: ['Docker', 'Kubernetes', 'AWS', 'Prometheus', 'Grafana', 'K6'] },
+    { category: 'Engineering Focus', items: ['Distributed Systems', 'Event-Driven Design', 'Observability', 'Performance Optimization', 'RBAC', 'Root Cause Analysis'] },
+  ] : [
+    { category: '程式語言', items: ['Java', 'Go（學習中）', 'TypeScript', 'JavaScript', 'SQL', 'Python'] },
+    { category: '後端與資料', items: ['Spring Boot', 'Kafka', 'MongoDB', 'Redis', 'PostgreSQL', 'PostGIS'] },
+    { category: '基礎設施與維運', items: ['Docker', 'Kubernetes', 'AWS', 'Prometheus', 'Grafana', 'K6'] },
+    { category: '工程專長', items: ['分散式系統', '事件驅動設計', '可觀測性', '效能優化', 'RBAC', '根因分析'] },
   ];
 
-  const experiences = [
+  const experiences = isEnglish ? [
     {
-      company: '富邦媒體科技股份有限公司 (Momo購物)',
-      position: '軟體工程師',
-      period: '2025/02 - 現在',
-      description: '負責電商平台核心系統開發與維護，專注於高流量場景下的系統效能優化與架構改造。',
+      company: 'Fubon Media Technology (momo)',
+      position: 'Software Engineer',
+      period: 'Feb 2025 – Apr 2026 · Taipei',
+      description: "Built and operated core systems for one of Taiwan's largest e-commerce platforms.",
       achievements: [
-        '主導重構「客戶活動資格計算模組」，導入 JPA 與 Redis，將 API 回應時間從 5 秒優化至 200ms (提升 90%)',
-        '擔任 on-call 輪值，確保核心系統 24/7 高可用性，具備緊急故障排除實戰經驗',
-        '引入 Maven 與 GitLab CI/CD，建立自動化部署流水線，為 K8s 容器化管理鋪路',
-        '撰寫 Shell Script 自動化部署流程，將部署時間從 30 分鐘縮短至 3 分鐘 (效率提升 90%)',
-        '開發後台自動化工具，取代耗時半天的人工 HTML 調整作業',
+        'Led a ground-up event-driven rebuild using Kafka and MongoDB, cutting calculation latency from 3–5 minutes to an average of 4 seconds.',
+        'Diagnosed a critical API bottleneck and introduced Redis caching and critical-path tuning, reducing response time from 1000ms+ to under 100ms.',
+        'Shipped Prometheus and Grafana observability for latency and error-rate regressions, and validated changes with K6 load testing.',
+        'Coordinated requirements and acceptance checkpoints across business and engineering teams for Double 11 and daily campaigns serving 100,000+ daily active users.',
+        'Introduced Scrum, workload metrics, and progress visibility to improve delivery predictability and reduce ad-hoc coordination.',
+      ],
+    },
+    {
+      company: 'Business Intelligence Info. Corp',
+      position: 'Java Software Engineer',
+      period: 'Dec 2023 – Nov 2024 · Taipei',
+      description: 'Built banking CRM systems in a regulated financial environment.',
+      achievements: [
+        'Moved PII masking from the frontend to backend Interceptors and Spring Cache, lowering API latency from 1000ms to 60ms and improving load-test throughput by 30%.',
+        'Refactored the RBAC model from User/Role to Organization/User/Role for more granular scope control.',
+        'Implemented AOP-based SQL and API audit logging to support regulatory compliance and access traceability.',
+      ],
+    },
+  ] : [
+    {
+      company: '富邦媒體科技（momo 購物）',
+      position: '軟體工程師',
+      period: '2025 年 2 月 – 2026 年 4 月 · 台北',
+      description: '為台灣大型電商平台打造並維運核心系統。',
+      achievements: [
+        '主導以 Kafka 與 MongoDB 從零重建事件驅動系統，將計算延遲從 3–5 分鐘縮短至平均 4 秒。',
+        '找出關鍵 API 效能瓶頸，導入 Redis 快取並優化關鍵路徑，將回應時間從 1000ms 以上降至 100ms 以下。',
+        '導入 Prometheus 與 Grafana 監控延遲及錯誤率，並使用 K6 進行負載測試驗證。',
+        '負責雙 11 與日常活動的跨部門需求及驗收協調，支援超過 10 萬名每日活躍使用者。',
+        '在團隊導入 Scrum、工作量指標與進度透明化，提升交付可預測性並減少臨時溝通成本。',
       ],
     },
     {
       company: '商智資訊股份有限公司',
       position: 'Java 軟體工程師',
-      period: '2023/12 - 2024/11',
-      description: '負責銀行 CRM 系統開發與維護，專注於系統安全性、效能優化與合規性需求實作。',
+      period: '2023 年 12 月 – 2024 年 11 月 · 台北',
+      description: '在高度監管的金融環境中開發銀行 CRM 系統。',
       achievements: [
-        '重構權限模型為「組織/用戶/角色」模式，滿足客戶彈性管理需求',
-        '重新設計個資保護機制，透過 Interceptor 與 Spring Cache 實現動態遮蔽，API 響應時間從 1000ms 降至 60ms (效能提升 94%)',
-        '運用 AOP 技術實作全站 SQL 查詢日誌系統，確保所有操作可追蹤與合規',
-        '參與高資產客戶系統開發 (Vue3 + Spring Boot)，負責 Jasper Reports 報表功能',
-        '全程參與新系統 SDLC，包含需求分析、功能實作、單元測試與 QA 協作',
+        '將個資遮蔽從前端移至後端 Interceptor 與 Spring Cache，使 API 延遲從 1000ms 降至 60ms，負載測試吞吐量提升 30%。',
+        '將 RBAC 權限模型從使用者／角色重構為組織／使用者／角色，提供更細緻的範圍控管。',
+        '實作基於 AOP 的 SQL 與 API 稽核日誌，支援法規遵循與存取追蹤。',
       ],
     },
   ];
 
+  const introduction = isEnglish
+    ? {
+        title: 'Distributed systems that handle real traffic',
+        paragraphs: [
+          'I am a backend engineer based in Taipei, focused on high-throughput services, asynchronous event pipelines, and the observability required to keep them healthy.',
+          'I care about the engineering beyond the demo: behavior under load, graceful degradation, and finding regressions before users do. My recent work spans e-commerce systems and regulated banking platforms.',
+          'I am now expanding deliberately into Go and SRE—building infrastructure, observability, and operational ownership alongside application development.',
+        ],
+      }
+    : {
+        title: '處理真實流量的分散式系統',
+        paragraphs: [
+          '我是現居台北的後端工程師，專注於高吞吐服務、非同步事件管線，以及維持系統健康所需的可觀測性。',
+          '我重視展示畫面之外的工程問題：系統在負載下的行為、如何優雅降級，以及如何在使用者發現前找出效能退化。近期經驗涵蓋電商核心系統與受監管的銀行平台。',
+          '目前我正有計畫地拓展 Go 與 SRE 能力，將基礎設施、可觀測性與營運責任納入應用開發的完整生命週期。',
+        ],
+      };
+
   return (
     <section id="about" className="about">
       <div className="about-container">
-        <h2 className="section-title">關於我</h2>
+        <h2 className="section-title">{isEnglish ? 'Experience' : '工作經歷'}</h2>
         <div className="about-content">
           <div className="about-text">
-            <h3>哈囉！很高興認識你</h3>
-            <p>
-              我是洪偉森，畢業於淡江大學資訊工程學系，目前在富邦媒體科技擔任軟體工程師。
-              我專注於 Java 後端開發與系統架構優化，對於如何透過程式碼建構高效、穩定的系統抱有濃厚的興趣。
-            </p>
-            <p>
-              我的職涯始於商智資訊，在嚴謹的金融系統開發環境中，累積了扎實的全端開發與系統設計經驗。
-              目前在 Momo 購物面對電商平台的高流量與高併發挑戰，我主動發掘並解決系統瓶頸，
-              成功將關鍵 API 效能提升 90%，同時推動團隊開發流程現代化。
-            </p>
-            <p>
-              除了程式開發，我更關注團隊整體的開發效率與系統的長期維護性。
-              我相信，優化開發流程與提升架構的擴展性，是創造長期價值的關鍵。
-            </p>
+            <h3>{introduction.title}</h3>
+            {introduction.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>
           <div className="about-stats">
             <div className="stat-card">
-              <div className="stat-number">2+</div>
-              <div className="stat-label">年經驗</div>
+              <div className="stat-number">4 sec</div>
+              <div className="stat-label">{isEnglish ? 'From 3–5 minutes' : '原需 3–5 分鐘'}</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">90%+</div>
-              <div className="stat-label">效能提升</div>
+              <div className="stat-number">&lt;100ms</div>
+              <div className="stat-label">{isEnglish ? 'Optimized hot path' : '關鍵路徑優化'}</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">24/7</div>
-              <div className="stat-label">系統維護</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bio-section">
-          <h3 className="section-subtitle">自傳</h3>
-          <div className="bio-content">
-            <div className="bio-paragraph">
-              <h4>🎯 職涯起點</h4>
-              <p>
-                畢業於淡江大學資訊工程學系，在校期間除了核心的計算機科學知識外，
-                我對如何透過程式碼建構高效、穩定的系統抱有濃厚的興趣，這也成為我職涯發展的核心動力。
-                從學生時期開始，我就對系統架構與效能優化特別感興趣，並持續在實務工作中深化這方面的能力。
-              </p>
-            </div>
-            <div className="bio-paragraph">
-              <h4>💡 商智資訊經歷</h4>
-              <p>
-                我的職涯始於商智資訊，擔任 Java 軟體工程師，主要負責銀行 CRM 系統開發。
-                這份工作讓我深刻體會到，在金融領域，軟體的穩定性、安全性與合規性至關重要。
-                我曾負責重構權限模組與個資動態遮蔽機制，在嚴謹的 SDLC 流程下，不僅滿足客戶複雜的管理需求，
-                更透過後端快取將 API 效能提升了 94%。同時運用 AOP 技術實作全站 SQL 日誌，確保所有資料庫操作皆有跡可循。
-                這段經歷為我打下了扎實的全端開發與系統設計基礎。
-              </p>
-            </div>
-            <div className="bio-paragraph">
-              <h4>🚀 Momo 購物挑戰</h4>
-              <p>
-                為了追求更深度的技術挑戰與更大的影響力，我轉職至富邦媒體科技 (Momo 購物)。
-                面對電商平台的高流量與高併發特性，我主動發掘並解決了潛在的系統瓶頸。
-                最具代表性的專案是重構運行十年的「客戶活動資格計算模組」，透過導入 JPA 與 Redis，
-                成功將關鍵 API 的回應時間由 5 秒以上縮短至 200 毫秒，顯著提升了使用者體驗與系統穩定性。
-                同時擔任 on-call 輪值，確保核心系統 24/7 高可用性。
-              </p>
-            </div>
-            <div className="bio-paragraph">
-              <h4>🤝 開發效率提升</h4>
-              <p>
-                除了程式開發，我更關注團隊整體的開發效率。我主動引入 Maven 與 GitLab CI/CD，
-                建立了自動化的部署流水線，為後續導入 K8s 容器化管理鋪路；
-                並撰寫 Shell Script 將部署時間從 30 分鐘大幅縮短至 3 分鐘。
-                我相信，優化開發流程與提升架構的擴展性，是創造長期價值的關鍵。
-                好的工程師不只是寫好程式碼，更要能夠理解業務需求，提升團隊效率，創造真正的價值。
-              </p>
+              <div className="stat-number">100K+</div>
+              <div className="stat-label">{isEnglish ? 'Daily active users' : '每日活躍使用者'}</div>
             </div>
           </div>
         </div>
 
         <div className="experience-section">
-          <h3 className="section-subtitle">工作經歷</h3>
           <div className="timeline">
-            {experiences.map((exp, index) => (
-              <div key={index} className="timeline-item">
+            {experiences.map((experience) => (
+              <div key={`${experience.company}-${experience.period}`} className="timeline-item">
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
                   <div className="experience-header">
                     <div>
-                      <h4>{exp.position}</h4>
-                      <p className="company-name">{exp.company}</p>
+                      <h4>{experience.position}</h4>
+                      <p className="company-name">{experience.company}</p>
                     </div>
-                    <span className="period">{exp.period}</span>
+                    <span className="period">{experience.period}</span>
                   </div>
-                  <p className="experience-description">{exp.description}</p>
+                  <p className="experience-description">{experience.description}</p>
                   <div className="achievements">
-                    <strong>主要成就：</strong>
+                    <strong>{isEnglish ? 'Selected impact' : '代表成果'}</strong>
                     <ul>
-                      {exp.achievements.map((achievement, idx) => (
-                        <li key={idx}>{achievement}</li>
+                      {experience.achievements.map((achievement) => (
+                        <li key={achievement}>{achievement}</li>
                       ))}
                     </ul>
                   </div>
@@ -148,20 +141,28 @@ const About = () => {
         </div>
 
         <div className="skills-section">
-          <h3 className="skills-title">技能專長</h3>
+          <h3 className="skills-title">{isEnglish ? 'Technical Skills' : '技術能力'}</h3>
           <div className="skills-grid">
-            {skills.map((skillGroup, index) => (
-              <div key={index} className="skill-group">
+            {skills.map((skillGroup) => (
+              <div key={skillGroup.category} className="skill-group">
                 <h4>{skillGroup.category}</h4>
                 <div className="skill-tags">
-                  {skillGroup.items.map((skill, idx) => (
-                    <span key={idx} className="skill-tag">
-                      {skill}
-                    </span>
+                  {skillGroup.items.map((skill) => (
+                    <span key={skill} className="skill-tag">{skill}</span>
                   ))}
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="bio-section">
+          <h3 className="section-subtitle">{isEnglish ? 'Education' : '學歷'}</h3>
+          <div className="bio-content">
+            <div className="bio-paragraph">
+              <h4>{isEnglish ? 'Tamkang University' : '淡江大學'}</h4>
+              <p>{isEnglish ? 'B.S. in Computer Science & Information Engineering · Sep 2018 – Jun 2022' : '資訊工程學系學士 · 2018 年 9 月 – 2022 年 6 月'}</p>
+            </div>
           </div>
         </div>
       </div>

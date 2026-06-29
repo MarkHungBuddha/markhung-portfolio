@@ -1,18 +1,39 @@
 import './Hero.css';
+import resumeUrl from '../../doc/cv_en.pdf?url';
+import { useLanguage } from '../i18n/language';
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const copy = language === 'en'
+    ? {
+        title: <>Backend engineer building <span className="highlight">systems that scale.</span></>,
+        subtitle: 'Mark Hung · Backend Software Engineer · Taipei, Taiwan',
+        description: 'I design and operate distributed backends that stay fast and reliable under load—Java, Spring Boot, Kafka, Redis, Kubernetes, and AWS. Currently expanding into Go and SRE.',
+        projects: 'View Projects',
+        contact: 'Contact Me',
+        resume: 'Résumé PDF',
+      }
+    : {
+        title: <>打造可擴展系統的<span className="highlight">後端工程師。</span></>,
+        subtitle: '洪偉森 Mark Hung · 後端軟體工程師 · 台北',
+        description: '我設計並維運在高負載下仍快速、可靠的分散式後端系統，技術涵蓋 Java、Spring Boot、Kafka、Redis、Kubernetes 與 AWS，目前持續拓展 Go 與 SRE 能力。',
+        projects: '查看專案',
+        contact: '聯絡我',
+        resume: '英文履歷 PDF',
+      };
+
   return (
     <section id="hero" className="hero">
       <div className="hero-content">
         <div className="hero-text">
           <h1 className="hero-title">
-            你好，我是 <span className="highlight">洪偉森</span>
+            {copy.title}
           </h1>
           <p className="hero-subtitle">
-            Java 後端工程師 | 全端開發者 | 系統架構優化專家
+            {copy.subtitle}
           </p>
           <p className="hero-description">
-            專注於高併發系統優化與微服務架構，致力於打造高效能、高可用性的企業級應用
+            {copy.description}
           </p>
           <div className="hero-buttons">
             <a
@@ -23,7 +44,7 @@ const Hero = () => {
                 document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              查看作品
+              {copy.projects}
             </a>
             <a
               href="#contact"
@@ -33,8 +54,10 @@ const Hero = () => {
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              聯絡我
+              {copy.contact}
             </a>
+            <a href="https://github.com/MarkHungBuddha" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href={resumeUrl} className="btn btn-secondary" target="_blank" rel="noopener noreferrer">{copy.resume}</a>
           </div>
         </div>
         <div className="hero-image">

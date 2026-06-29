@@ -1,4 +1,5 @@
 import matter from 'gray-matter';
+import type { Language } from '../i18n/language';
 
 export interface BlogPost {
   slug: string;
@@ -12,11 +13,11 @@ export interface BlogPost {
 }
 
 // 取得所有部落格文章的列表
-export async function getAllPosts(): Promise<BlogPost[]> {
+export async function getAllPosts(language: Language): Promise<BlogPost[]> {
   // 這裡列出所有的 markdown 檔案
-  const blogFiles = [
-    'how-to-build-static-blog'
-  ];
+  const blogFiles = language === 'en'
+    ? ['how-to-build-static-blog']
+    : ['how-to-build-static-blog-zh'];
 
   const posts = await Promise.all(
     blogFiles.map(async (slug) => {
@@ -67,9 +68,9 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
 }
 
 // 格式化日期
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, language: Language): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('zh-TW', {
+  return date.toLocaleDateString(language === 'en' ? 'en-US' : 'zh-TW', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'

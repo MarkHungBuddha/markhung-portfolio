@@ -1,18 +1,21 @@
 import './Contact.css';
+import { useLanguage } from '../i18n/language';
 
 const Contact = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const contactMethods = [
     {
       icon: '📧',
       title: 'Email',
-      value: 'p1i979thv@mozmail.com',
-      link: 'mailto:p1i979thv@mozmail.com',
+      value: '1909kram@gmail.com',
+      link: 'mailto:1909kram@gmail.com',
     },
     {
       icon: '💼',
       title: 'LinkedIn',
-      value: 'linkedin.com/in/wei-sen-hung-29a280205',
-      link: 'https://www.linkedin.com/in/wei-sen-hung-29a280205',
+      value: 'linkedin.com/in/markhung384',
+      link: 'https://linkedin.com/in/markhung384',
     },
     {
       icon: '🐱',
@@ -20,37 +23,30 @@ const Contact = () => {
       value: 'github.com/MarkHungBuddha',
       link: 'https://github.com/MarkHungBuddha',
     },
-    // {
-    //   icon: '🐦',
-     // title: 'Twitter',
-    //   value: '@markhung',
-    //   link: 'https://twitter.com',
-    // },
   ];
 
   return (
     <section id="contact" className="contact">
       <div className="contact-container">
-        <h2 className="section-title">聯絡我</h2>
-        <p className="section-subtitle">
-          有任何問題或合作機會？歡迎隨時與我聯繫！
-        </p>
+        <h2 className="section-title">{isEnglish ? "Let's Build Reliable Systems" : '一起打造可靠的系統'}</h2>
+        <p className="section-subtitle">{isEnglish ? 'Based in Taipei · Open to backend and SRE roles' : '現居台北 · 尋找後端與 SRE 職涯機會'}</p>
 
-        <div className="contact-content">
+        <div className="contact-content contact-content-single">
           <div className="contact-info">
-            <h3>讓我們一起合作</h3>
+            <h3>{isEnglish ? 'Get in touch' : '與我聯絡'}</h3>
             <p>
-              我目前正在尋找新的機會，無論是全職工作、自由接案或是開源專案合作，
-              都歡迎與我聯繫。我會盡快回覆您的訊息。
+              {isEnglish
+                ? 'I am interested in backend and SRE opportunities where distributed systems, production reliability, and end-to-end ownership matter.'
+                : '我正在尋找重視分散式系統、正式環境可靠性與端到端責任的後端或 SRE 機會。'}
             </p>
             <div className="contact-methods">
-              {contactMethods.map((method, index) => (
+              {contactMethods.map((method) => (
                 <a
-                  key={index}
+                  key={method.title}
                   href={method.link}
                   className="contact-method"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={method.title === 'Email' ? undefined : '_blank'}
+                  rel={method.title === 'Email' ? undefined : 'noopener noreferrer'}
                 >
                   <span className="contact-icon">{method.icon}</span>
                   <div className="contact-details">
@@ -60,54 +56,6 @@ const Contact = () => {
                 </a>
               ))}
             </div>
-          </div>
-
-          <div className="contact-form-container">
-            <form className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name">姓名</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="您的姓名"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="your@email.com"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="subject">主旨</label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  placeholder="您想討論的主題"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="message">訊息</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  placeholder="寫下您的訊息..."
-                  required
-                ></textarea>
-              </div>
-              <button type="submit" className="btn btn-primary submit-btn">
-                發送訊息
-              </button>
-            </form>
           </div>
         </div>
       </div>
